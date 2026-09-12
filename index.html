@@ -218,6 +218,8 @@
   .rzvit{font-family:var(--mono);font-size:13px;background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:6px 10px;color:var(--muted)}
   .rzvit b{color:var(--txt)}
   .rzvit.warn{border-color:var(--reddim);color:var(--red)} .rzvit.warn b{color:var(--red)}
+  .rzvit.z1{border-color:rgba(247,201,72,.5);color:#f7c948} .rzvit.z1 b{color:#f7c948}
+  .rzvit.z2{border-color:var(--reddim);color:var(--red)} .rzvit.z2 b{color:var(--red)}
   .keypattern{border:1px solid var(--cyan);background:rgba(56,214,214,.06);border-radius:12px;padding:13px 15px;margin:14px 0}
   .keypattern .kh{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:7px}
   .keypattern .kp{font-size:14px;line-height:1.55;color:var(--txt)}
@@ -751,12 +753,13 @@ const S={ good:()=>{beep(660,.09,'sine',.12);setTimeout(()=>beep(990,.13,'sine',
     }); } };
 
 /* ============================================================= ZONE LOGIC (illustrative adult BTF) */
-function zoneRR(v){ if(v<=5||v>=30)return 2; if(v<=8||v>=21)return 1; return 0; }
-function zoneSpO2(v){ if(v<85)return 2; if(v<=92)return 1; return 0; }
-function zoneHR(v){ if(v<40||v>140)return 2; if(v<=49||v>=120)return 1; return 0; }
-function zoneSBP(v){ if(v<90)return 2; if(v<=100||v>=200)return 1; return 0; }
-function zoneTemp(v){ if(v>=38.5||v<35.5)return 1; if(v>=38)return 1; return 0; }
-function zoneLOC(s){ return s==='alert'?0 : (s==='confused'?1:2); }
+// Zones per NSW Standard Adult General Observation Chart (Between the Flags): 2=Red, 1=Yellow, 0=White
+function zoneRR(v){ if(v<=5||v>=30)return 2; if(v<=10||v>=25)return 1; return 0; }          // white 11-24
+function zoneSpO2(v){ if(v<=90)return 2; if(v<=94)return 1; return 0; }                     // red <=90, yellow 91-94, white >=95
+function zoneHR(v){ if(v<=40||v>=140)return 2; if(v<=50||v>=120)return 1; return 0; }        // white 51-119
+function zoneSBP(v){ if(v<=90||v>=200)return 2; if(v<=100||v>=180)return 1; return 0; }      // white 101-179
+function zoneTemp(v){ if(v>=38.5||v<=35.5)return 1; return 0; }                             // no red; white 36-38.4
+function zoneLOC(s){ return s==='alert'?0 : ((s==='confused'||s==='voice')?1:2); }          // A white; C,V yellow; P,U red
 const ZCLASS=['z-normal','z-yellow','z-red'];
 
 /* ============================================================= SCENARIOS */
@@ -5791,7 +5794,8 @@ function rzProgress(){
 }
 function rzShowNext(txt,fn){ const b=$('rzNext'); b.textContent=txt; rzAction=fn; b.classList.remove('hide'); }
 function rzHideNext(){ $('rzNext').classList.add('hide'); rzAction=null; }
-function rzVit(lbl,val,warn){ return `<span class="rzvit${warn?' warn':''}">${lbl} <b>${val}</b></span>`; }
+function rzZone(fn,raw){ const n=parseFloat(raw); return isNaN(n)?0:fn(n); }
+function rzVit(lbl,val,z){ const c=z===2?' z2':(z===1?' z1':''); return `<span class="rzvit${c}">${lbl} <b>${val}</b></span>`; }
 function renderRz(){
   rzProgress(); $('rzFb').className='fb'; $('rzFb').innerHTML=''; rzHideNext();
   if(rzIdx===0) return renderRzNotice();
@@ -5806,11 +5810,11 @@ function renderRzNotice(){
     <div class="when" style="font-family:var(--mono);color:var(--cyan);font-size:13px;margin-bottom:8px">⏱ ${rzData.when}</div>
     <p style="font-size:15px;line-height:1.55;margin:0 0 4px">${rzData.text}</p>
     <div class="rzvitals">
-      ${rzVit('RR',v.rr, v.rr>=25||v.rr<=8)}
-      ${rzVit('SpO₂',v.spo2+'%', v.spo2<92)}
-      ${rzVit('HR',v.hr, v.hr>=130||v.hr<=45)}
-      ${rzVit('BP',v.sbp, v.sbp<90)}
-      ${rzVit('Temp',v.temp+'°', v.temp>=38.5||v.temp<=35.5)}
+      ${rzVit('RR',v.rr, rzZone(zoneRR,v.rr))}
+      ${rzVit('SpO₂',v.spo2+'%', rzZone(zoneSpO2,v.spo2))}
+      ${rzVit('HR',v.hr, rzZone(zoneHR,v.hr))}
+      ${rzVit('BP',v.sbp, rzZone(zoneSBP,v.sbp))}
+      ${rzVit('Temp',v.temp+'°', rzZone(zoneTemp,v.temp))}
     </div>
     ${rzData.pattern?`<div class="rzpattern"><b>Pattern:</b> ${rzData.pattern}</div>`:''}
   </div>${rzData.noticeQuestion?`<div class="rzq" style="margin-top:12px">${rzData.noticeQuestion.prompt}</div><div class="rzopts" id="rzNoticeOpts"></div>`:''}`;
