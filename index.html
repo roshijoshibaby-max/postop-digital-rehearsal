@@ -570,7 +570,7 @@
       <div class="fb" id="fbBox"></div>
       <button class="btn full hide" id="nextBtn" style="margin-top:12px">Continue →</button>
     </div>
-    <button class="btn ghost full" id="quitBtn">Leave this patient</button>
+    <button class="btn ghost full" id="quitBtn">Exit scenario</button>
   </section>
 
   <!-- ============ REHEARSE ============ -->
@@ -589,7 +589,7 @@
       <div class="fb" id="rzFb"></div>
       <button class="btn full hide" id="rzNext" style="margin-top:12px">Continue →</button>
     </div>
-    <button class="btn ghost full" id="rzQuit" style="margin-top:4px">Leave this patient</button>
+    <button class="btn ghost full" id="rzQuit" style="margin-top:4px">Exit scenario</button>
   </section>
 
   <!-- ============ DEBRIEF ============ -->
@@ -1898,41 +1898,41 @@ const SCN=[
 
 { id:'elderlyconf', sys:'🧠', title:'New confusion in an elderly patient, POD2',
   bed:'BED 31', pt:'Iris Naylor, 84', pod:'POD2 · # neck of femur repair',
-  isbar:'<b>I:</b> Bed 31, Iris Naylor, 84. <b>S:</b> Day 2 after a hip-fracture repair. <b>B:</b> Lives independently, normally sharp. <b>A:</b> Catheter in, on regular analgesia. <b>R:</b> Routine obs.',
+  isbar:'<b>I:</b> Bed 31, Iris Naylor, 84. <b>S:</b> Day 2 following neck-of-femur repair. <b>B:</b> Lives independently and is normally cognitively sharp. <b>A:</b> Indwelling urinary catheter and regular postoperative analgesia. <b>R:</b> Continue routine postoperative observations.',
   vit:{rr:22,spo2:94,hr:100,sbp:118,temp:37.9,loc:'confused'},
-  event:{when:'07:30',text:'She\'s become newly confused and "not herself" this morning, which is a clear change from her usual sharp baseline. New confusion in an older surgical patient has a long list of causes — and "delirium" is a description, not a diagnosis.'},
+  event:{when:'07:30',text:'During the morning round Iris is unusually inattentive, gives the wrong location and is slower to answer — a clear change from the sharp baseline the night nurse documented at 02:00 (alert with stable obs then). New confusion is an acute change, not a consequence of age: it needs assessment for delirium and its underlying cause. Her temperature has risen to 37.9°C — a temperature rise to explain, not a confirmed diagnosis.'},
   stages:[
-   {phase:0,prompt:'Based on the information available, what is your leading clinical concern?',
+   {phase:0,prompt:'Based on the information available, what is the safest interpretation?',
     opts:[
-     {t:'New confusion is delirium — a sign with many causes (sepsis, hypoxia, glucose, electrolytes, drugs, pain, urinary retention/constipation, stroke). Find and treat the cause rather than labelling and sedating.',s:2,k:'good',f:'Right. Delirium is a syndrome, not a diagnosis. In an older surgical patient the common, treatable drivers are infection (UTI, chest), hypoxia, glucose and electrolyte derangement, medications, pain and retention/constipation — so screen systematically.'},
-     {t:'She\'s old — confusion is expected; give a sedative.',s:0,k:'bad',f:'New acute confusion is never "just age", and sedation worsens delirium. Screen for the cause.'},
-     {t:'Probably early dementia — nothing to do.',s:0,k:'bad',f:'An acute change from a sharp baseline is delirium, not dementia. It has reversible causes — look for them.'}
+     {t:'An acute change from baseline that needs assessment for delirium and its underlying cause — not a consequence of age.',s:2,k:'good',f:'Correct. New confusion should prompt assessment for delirium. Delirium describes an acute clinical syndrome; it does not identify the cause — screen A–G for reversible drivers. Keep the leading concerns open: infection, a respiratory/hypoxic cause, a medication/metabolic/fluid cause, or an acute neurological cause.'},
+     {t:'She\'s 84 — confusion is expected; give a sedative to settle her.',s:0,k:'bad',f:'New acute confusion is never "just age", and sedation worsens delirium. Assess for delirium and its cause.'},
+     {t:'Probably new dementia — nothing acute to do.',s:0,k:'bad',f:'An acute change from a sharp baseline is delirium, not dementia. It has reversible causes — look for them.'}
     ]},
-   {phase:1,prompt:'How do you respond?',
+   {phase:1,prompt:'What will you personally assess now?',
     opts:[
-     {t:'Run a structured delirium screen: obs incl. SpO₂ and temperature, glucose, examine for infection (urine/chest/wound), review medications, check pain/bladder/bowels, neuro screen; escalate via CERS and treat reversible causes.',s:2,k:'good',f:'Correct. A systematic screen catches the common reversible causes, and you avoid sedation, which deepens delirium.'},
-     {t:'Give a sedative to settle her.',s:0,k:'bad',f:'Sedation worsens delirium and can mask deterioration. Screen and treat the cause; keep her safe non-pharmacologically.'},
-     {t:'Just reorient her and wait it out.',s:1,k:'mid',f:'Reorientation helps, but on its own it ignores a possible infection, hypoxia or metabolic cause. Screen as well.'}
+     {t:'A structured A–G assessment now — airway/speech, RR/SpO₂/chest, HR/BP/perfusion/urine output, ACVPU/glucose/neuro, temperature/wound/lines/possible sources — escalating on calling criteria or clinical concern without waiting to finish every box.',s:2,k:'good',f:'Correct. A–G findings emerge: A patent, speaking in full sentences but inattentive. B RR 24, SpO₂ 92% RA, right basal crackles, a new cough. C HR 108, BP 104/66, CRT ~3 s, urine 25 mL in 2 h, no wound bleeding. D ACVPU C, BGL 6.2, no focal deficit, oxycodone 5 h ago. E temp 38.4°C, wound clean and dry, catheter in place, source not confirmed.'},
+     {t:'Give a sedative to settle her.',s:0,k:'bad',f:'Sedation worsens delirium and can mask deterioration. Assess and treat the cause; keep her safe non-pharmacologically.'},
+     {t:'Reorient her and reassess at the next round.',s:1,k:'mid',f:'Reorientation helps, but on its own it ignores possible infection, hypoxia or a metabolic cause. Assess A–G as well.'}
     ]},
-   {phase:2,prompt:'What\'s the plan?',
+   {phase:2,prompt:'With the A–G findings, what is your updated concern and safest next action?',
     opts:[
-     {t:'Work the causes: SpO₂ (oxygen if low), glucose, temperature/septic screen (UTI and chest are classic), medication review, check for urinary retention/constipation/pain, hydration and electrolytes, a neuro check for stroke; manage non-pharmacologically (reorient, glasses/hearing aids, sleep, mobilise) and treat the underlying cause.',s:2,k:'good',f:'The right package — a broad but structured screen, non-drug measures first, and treatment aimed at the cause you find.'},
-     {t:'Restrain and sedate her for safety.',s:0,k:'bad',f:'Restraint and sedation worsen delirium and risk harm. Use safe non-pharmacological measures and treat the cause.'},
-     {t:'Catheterise her without checking anything else.',s:1,k:'mid',f:'Retention is one cause worth checking, but a single action isn\'t a screen. Work through the full differential.'}
+     {t:'Acute delirium with suspected infection and possible sepsis (source not confirmed): stay with Iris, escalate immediately via the local CERS pathway, request an urgent bedside review, give supportive care, consider the local sepsis pathway, and complete the formal delirium assessment after the deterioration is addressed.',s:2,k:'good',f:'The right package — escalate on concern without waiting for certainty, treat supportively, and keep the differential open. A respiratory source is possible; medication/metabolic, dehydration/bleeding and neurological causes still require assessment. The catheter is a risk factor and possible source — not a confirmed UTI.'},
+     {t:'Restrain and sedate her for safety.',s:0,k:'bad',f:'Restraint and sedation worsen delirium and risk harm. Escalate, use safe non-pharmacological measures and treat the cause.'},
+     {t:'Obtain a urine specimen and wait for the result.',s:1,k:'mid',f:'A specimen is reasonable, but waiting delays escalation. Escalate now on clinical concern and keep assessing — the catheter is a possible source, not a confirmed UTI.'}
     ]},
    {phase:3,prompt:'Pick the ISBAR.',
     opts:[
-     {t:'"RN, Ward X. Iris Naylor, bed 31, POD2 hip-fracture repair, normally sharp. New confusion this morning — I\'m screening the causes: SpO₂ 94, glucose checked, temp 37.9 so looking for a source (UTI/chest), reviewing meds, checking retention/pain. Please review; managing non-pharmacologically meanwhile."',s:2,k:'good',f:'Excellent — you frame delirium as a sign, give your structured screen and findings, and avoid sedation. That\'s exactly the approach.'},
-     {t:'"She\'s confused, can I have something to settle her?"',s:0,k:'bad',f:'Requesting sedation skips the cause. Report the screen and findings.'},
-     {t:'"She\'s a bit muddled, probably her age."',s:0,k:'bad',f:'"Her age" misses a reversible cause. Give the acute change and your screen.'}
+     {t:'"RN on 5 South — Iris Naylor, 84, bed 31, POD2 after neck-of-femur repair, normally independent and sharp. New confusion with worsening obs: now HR 108, RR 24, SpO₂ 92% RA, BP 104/66, temp 38.4, with right basal crackles, a new cough and reduced urine output; BGL 6.2. I\'m concerned about acute deterioration including possible sepsis — I\'ve escalated via CERS and need an urgent bedside review."',s:2,k:'good',f:'Excellent — you frame delirium as an acute change, give the trend and A–G findings, name the concern (possible sepsis) and request urgent review without waiting for certainty.'},
+     {t:'"She\'s confused, can I have something to settle her?"',s:0,k:'bad',f:'Requesting sedation skips the cause and the deterioration. Report the acute change, the trend and your concern.'},
+     {t:'"She\'s a bit muddled, probably her age."',s:0,k:'bad',f:'"Her age" misses a reversible cause and a deteriorating patient. Give the acute change and your findings.'}
     ]}
   ],
-  debrief:{dx:'New confusion (delirium) in an elderly surgical patient — find the cause',
-   rationale:'Delirium is a syndrome, not a diagnosis; in older surgical patients the common, treatable drivers are infection (UTI, chest), hypoxia, glucose and electrolyte derangement, medications, pain and urinary retention/constipation — with stroke to consider if there is a focal change. The response is a systematic screen and treating the cause, while avoiding sedation, which worsens it.',
-   redflags:['An acute change from the patient\'s baseline','A fluctuating course','Any reversible cause present (infection, hypoxia, glucose, drugs, retention)','A focal neurological change (screen for stroke)'],
-   isbarModel:'"RN, Ward X. Iris Naylor, bed 31, POD2 hip-fracture repair, normally sharp. New confusion — screening SpO₂ 94, glucose checked, temp 37.9 (looking for UTI/chest), reviewing meds, checking retention/pain. Please review; managing non-pharmacologically."',
+  debrief:{dx:'New confusion (acute delirium) with suspected infection and possible sepsis — assess and find the cause',
+   rationale:'New confusion is an acute change from baseline, not a consequence of ageing; it should trigger assessment for delirium and its reversible causes. Here an acute cognitive change was accompanied by an evolving physiological trend — a temperature rise, worsening oxygenation, tachypnoea, tachycardia, a falling BP and reduced urine output — raising concern for infection and possible sepsis, with the source not yet confirmed. Delirium is the clinical syndrome; infection / sepsis is a possible underlying cause; the urinary catheter is a risk factor and possible source, not a confirmed UTI. Escalate on clinical concern without waiting for diagnostic certainty.',
+   redflags:['An acute change from the patient\'s cognitive baseline','A worsening physiological trend across several observations','A temperature rise with reduced urine output and new chest findings','A focal neurological change (reconsider and screen for stroke)'],
+   isbarModel:'"RN on 5 South — Iris Naylor, 84, bed 31, POD2 after neck-of-femur repair, normally independent and sharp. New confusion with worsening obs (HR 108, RR 24, SpO₂ 92% RA, BP 104/66, temp 38.4), right basal crackles, a new cough and reduced urine output. Concerned about acute deterioration including possible sepsis — escalated via CERS, requesting urgent bedside review."',
    chains:['delirium-cause'],
-   pearls:['Delirium is a sign — always hunt the cause (infection, hypoxia, glucose, drugs, retention).','Avoid sedation where possible; use non-drug measures first.','A sudden focal change means screen for stroke.']}
+   pearls:['New confusion is not expected ageing — assess for delirium and its cause.','Delirium = the syndrome; infection / sepsis = a possible cause; the catheter = a risk factor, not a confirmed UTI.','Escalate on clinical concern regardless of the zones — don\'t wait for certainty or every assessment box.','Notice the change → assess A–G → consider the causes → escalate via CERS → communicate with ISBAR.']}
 },
 
 { id:'diabeticdrowsy', sys:'🍬', title:'Diabetic patient becomes drowsy, POD1',
@@ -2581,10 +2581,10 @@ const LIKELIHOOD={
     {t:'That it\'s POD2.',s:0,k:'bad',f:'Timing alone doesn\'t separate them. Screen the physiology and the source.'}]}
  },
  elderlyconf:{
-  dx:[{id:'sep',label:'Sepsis (UTI / chest)',prior:30,danger:true},
-      {id:'delir',label:'Simple delirium',prior:30},
-      {id:'metab',label:'Metabolic / hypoxic cause',prior:22},
-      {id:'dem',label:'Dementia / "just age"',prior:18}],
+  dx:[{id:'sep',label:'Infection / possible sepsis',prior:30,danger:true},
+      {id:'delir',label:'Delirium (syndrome — find the cause)',prior:30},
+      {id:'metab',label:'Medication / metabolic / hypoxic cause',prior:22},
+      {id:'dem',label:'Dementia (unlikely — acute change)',prior:18}],
   evidence:[
    {label:'Fever + abnormal observations',lr:{sep:2.8,delir:0.8,metab:1,dem:0.6}},
    {label:'Acute change from a sharp baseline',lr:{sep:1.6,delir:1.6,metab:1.4,dem:0.5}},
@@ -4701,56 +4701,72 @@ const REHEARSE={
   ]
  },
  elderlyconf:{
-  notice:'Iris is POD2 after neck-of-femur repair. This morning she is newly confused and less attentive than usual — overnight she was documented as alert and conversing normally. She is now restless and repeatedly asking where she is.',
-  pattern:'acute change in cognition after surgery.',
+  notice:'Iris Naylor, 84, is POD2 after neck-of-femur repair — normally independent and cognitively sharp. At 07:30 she is inattentive, gives the wrong location and is slower to answer. Her observations have shifted from the 02:00 baseline: HR 82 → 100; BP 132/76 → 118/73; RR 16 → 22; SpO₂ 97% → 94% RA; Temp 36.7 → 37.9°C.',
+  noticeWhen:'07:30',
+  noticeVit:{rr:22,spo2:94,hr:100,sbp:'118/73',temp:37.9,loc:'confused'},
+  pattern:'',
   progressive:true,
-  commitPrompt:'Hold that thought — now gather more evidence before you commit.',
-  commitBtn:'Check the patient →',
+  noticeQuestion:{
+    prompt:'Which interpretation best fits the pattern at this point?',
+    options:[
+     {t:'Acute delirium with evolving physiological deterioration of uncertain cause', preferred:true},
+     {t:'Medication-, opioid- or metabolic contribution to acute delirium'},
+     {t:'Early infection-related deterioration, including possible sepsis'},
+     {t:'Developing respiratory compromise with secondary cognitive change'}
+    ],
+    preferredFb:'The safest current interpretation is acute delirium with evolving physiological change. The cause is not yet established, so keep infection, respiratory, medication / metabolic and other causes active.',
+    neutralFb:'Reasonable — but the safest current interpretation is acute delirium with evolving physiological change of uncertain cause. Keep infection, respiratory, medication / metabolic and other causes active.',
+    commitBtn:'Commit — now consider the cause →'
+  },
+  commitPrompt:'Hold that hypothesis. Now assess Iris and see which new findings strengthen or weaken it.',
+  commitBtn:'Check Iris →',
   call:{
+   q:'What is your leading clinical concern now?',
    options:[
-    {name:'Infection / evolving sepsis', isLeadingConcern:true},
-    {name:'Postoperative delirium — cause not yet established'},
-    {name:'Metabolic or hypoxic cause'},
-    {name:'Baseline cognitive impairment'}
+    {name:'Infection-related deterioration', isLeadingConcern:true},
+    {name:'Medication, metabolic or fluid-related cause'},
+    {name:'Respiratory / hypoxic complication'},
+    {name:'Acute neurological cause'}
    ],
-   correct:{ title:'infection / evolving sepsis is the leading concern.',
+   correct:{ title:'infection-related deterioration is the concern the evidence builds toward — acute delirium with a possible infective source and possible sepsis.',
     compare:[
-     {name:'Postoperative delirium — cause not yet established', note:'Delirium is the presenting syndrome — but the task is to find its cause, and the evolving fever, respiratory findings and deterioration point to infection.'},
-     {name:'Metabolic or hypoxic cause', note:'A reasonable consideration — check glucose and oxygenation — but the fever and a respiratory source point to infection here.'},
-     {name:'Baseline cognitive impairment', note:'This is an acute change from a documented sharp baseline, so it is not baseline impairment or dementia.'}
+     {name:'Medication, metabolic or fluid-related cause', note:'Worth excluding (BGL is 6.2 and normal), but medication or metabolic causes do not explain the temperature rise, chest findings and low urine output as well as infection.'},
+     {name:'Respiratory / hypoxic complication', note:'The basal crackles, cough and SpO₂ 92% matter, but they sit within a wider infective / systemic picture rather than an isolated respiratory problem.'},
+     {name:'Acute neurological cause', note:'No focal deficit and a normal glucose make a primary neurological event less likely than an acute delirium driven by systemic illness.'}
     ]}
   },
   checkSteps:[
-   {reveal:'Her temperature is now 38.4°C. Her respiratory rate has increased to 26 and her oxygen saturation has fallen to 91% on room air.',
-    prompt:'How does this new information change your concern?',
+   {reveal:'Iris remains acutely inattentive. RR 24, SpO₂ 92% RA, a new cough and right basal crackles, Temp 38.4°C.',
+    prompt:'How does this new information change your working differential?',
     options:[
-     {t:'Raises concern that an acute physiological illness is driving the delirium', correct:true, fb:'Delirium is a clinical syndrome, not the diagnosis — the acute confusion should trigger a search for the cause. New fever, tachypnoea and worsening oxygenation make an acute physiological illness the likely driver, not age or uncomplicated confusion.'},
-     {t:'Makes age-related confusion more likely', correct:false, fb:'Age does not cause new fever, tachypnoea and falling oxygen — this is an acute physiological illness driving the confusion.'},
-     {t:'Confirms dementia', correct:false, fb:'An acute change from a documented baseline with new fever and abnormal obs is delirium from a cause, not dementia.'},
-     {t:'Does not materially change the concern', correct:false, fb:'It changes it — new fever with worsening physiology means an acute illness is likely driving the delirium.'}
+     {t:'Infection-related deterioration becomes more concerning', correct:true, fb:'The new respiratory findings and temperature rise increase concern for infection-related deterioration, but the source and severity are not yet fully defined.'},
+     {t:'Medication / metabolic cause remains the leading explanation', correct:false, fb:'A medication or metabolic cause does not explain a new cough, basal crackles and a rising temperature — infection is now more concerning.'},
+     {t:'Acute neurological cause becomes more likely', correct:false, fb:'There is no focal deficit; the new respiratory findings and temperature point toward infection, not a primary neurological event.'},
+     {t:'The findings remain consistent with uncomplicated postoperative recovery', correct:false, fb:'A new cough, crackles, falling SpO₂ and a rising temperature are not uncomplicated recovery.'}
     ]},
-   {reveal:'She has developed a productive cough with new coarse right-basal breath sounds, her systolic BP has fallen to about 96 mmHg, and she is becoming more drowsy.',
-    prompt:'What does this add?',
+   {reveal:'HR 108, BP 104/66, CRT ~3 s, urine output 25 mL in 2 h, BGL 6.2, no focal neurological deficit, wound clean and dry.',
+    prompt:'Which finding most changes the level of concern now?',
     options:[
-     {t:'Raises concern for infection with evolving systemic deterioration', correct:true, fb:'The combination of acute cognitive change, fever, respiratory findings and worsening physiology now raises strong concern for infection with possible sepsis. The confusion may be an early manifestation of the acute illness.'},
-     {t:'Supports uncomplicated postoperative delirium', correct:false, fb:'Uncomplicated delirium does not come with a chest source, a falling BP and increasing drowsiness — this is infection with deterioration.'},
-     {t:'Makes dementia more likely', correct:false, fb:'A chest source with worsening physiology is not dementia — it is an acute infective process.'},
-     {t:'Suggests observation alone is sufficient', correct:false, fb:'Worsening physiology with a likely source needs escalation, not observation alone.'}
+     {t:'Acute cognitive change accompanied by worsening physiology across several systems', correct:true, fb:'The key signal is the pattern — acute delirium together with a temperature rise, tachypnoea, hypoxaemia, a falling BP, slow capillary refill and low urine output. This substantially increases concern for infection-associated deterioration and possible sepsis. The source is not yet confirmed, and a temperature alone does not prove sepsis.'},
+     {t:'Her age', correct:false, fb:'Age does not explain an acute change from baseline with worsening physiology across several systems.'},
+     {t:'The temperature of 38.4°C alone', correct:false, fb:'A single number is not the point — it is the acute cognitive change alongside the whole worsening pattern, and a temperature alone does not prove sepsis.'},
+     {t:'The urinary catheter alone', correct:false, fb:'The catheter is a risk factor and possible source, not a confirmed UTI — it is the whole worsening pattern that matters.'}
     ]}
   ],
-  checkResolve:'Iris\'s delirium is the clinical syndrome presenting at the bedside. The task is to identify what is driving it. As fever, abnormal physiology and source-compatible findings emerge, infection with possible sepsis becomes the leading concern.',
+  checkResolve:'Your initial concern may have been medication, metabolic, respiratory, neurological or infection related. The new bedside evidence now shifts the working picture toward acute delirium with evolving physiological deterioration, with infection and possible sepsis becoming an important concern. The source is not yet confirmed. Clinical concern should update as new evidence appears.',
   actOptions:[
-   {t:'Immediate clinical escalation and assessment per the local deterioration / sepsis pathway', correct:true},
-   {t:'Reassess in a few minutes', correct:false},
-   {t:'Attribute the change to postoperative delirium and continue observation', correct:false}
+   {t:'Escalate immediately while continuing A–G assessment and supportive care', correct:true},
+   {t:'Complete a formal delirium assessment before calling', correct:false},
+   {t:'Obtain a urine specimen and wait for results', correct:false},
+   {t:'Repeat observations in one hour', correct:false}
   ],
-  actFb:'Acute confusion with evolving physiological deterioration requires prompt escalation and assessment for reversible causes, including infection. Do not delay escalation while waiting for confirmatory investigations.',
-  actWrongFb:'New postoperative confusion accompanied by worsening physiological observations may represent acute deterioration. Reassessment alone risks delaying recognition of the underlying cause; escalate and assess according to the local deterioration pathway.',
+  actFb:'Stay with Iris, escalate through the local BTF / CERS pathway and request an urgent bedside review while continuing A–G assessment, monitoring and supportive care. Consider the locally approved sepsis pathway where appropriate. Complete the formal delirium assessment after the immediate deterioration has been addressed. Escalation must not wait for completion of the full assessment or confirmatory investigations. ISBAR: "Iris Naylor, 84, POD2 after neck-of-femur repair, new acute confusion with worsening obs — HR 108, BP 104/66, RR 24, SpO₂ 92% RA, Temp 38.4°C, basal crackles and low urine output — concerned about infection-related deterioration / possible sepsis and requesting urgent review."',
+  actWrongFb:'Acute confusion with a worsening physiological trend and a likely infective picture is time-critical — a formal delirium assessment first, a specimen-and-wait or repeating obs in an hour all lose time. Escalate now via BTF / CERS, request urgent review, and continue A–G assessment and supportive care in parallel.',
   takeaways:[
-   {n:1,c:'#38d6d6',h:'Delirium is a syndrome, not the diagnosis',t:'New acute confusion should trigger a search for the underlying cause.'},
-   {n:2,c:'#26e6a6',h:'Acute change ≠ baseline',t:'A clear change from a documented baseline is delirium, not dementia.'},
-   {n:3,c:'#f7c948',h:'Look for the driver',t:'Fever, abnormal obs and a source point to an acute illness driving the confusion.'},
-   {n:4,c:'#a78bfa',h:'Escalate on the physiology',t:'Escalate and assess per the local deterioration / sepsis pathway — the level follows the physiology and BTF/CERS criteria.'}
+   {n:1,c:'#38d6d6',h:'Update, don\'t anchor',t:'Let each new finding strengthen or weaken your hypothesis rather than locking in early.'},
+   {n:2,c:'#26e6a6',h:'Delirium is the syndrome',t:'Acute delirium is the presenting syndrome; infection / possible sepsis is an evolving causal concern, not an assumption.'},
+   {n:3,c:'#f7c948',h:'It\'s the pattern, not one clue',t:'Acute cognitive change WITH worsening physiology across systems is the signal — not fever, age or the catheter alone.'},
+   {n:4,c:'#a78bfa',h:'Escalate before certainty',t:'Escalate via BTF / CERS and run A–G in parallel — don\'t wait for the source or confirmatory tests.'}
   ]
  },
  silentbleed:{
